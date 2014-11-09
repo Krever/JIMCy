@@ -27,7 +27,7 @@ val clazz = result.classLoader.loadClass(simpleClassName)
 
 ## TODO
 * Java API
-* Class name recognition from source
+* Class name recognition from source code
 * Publish to public repository
 
 ## Thanks
