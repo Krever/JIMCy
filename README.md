@@ -20,8 +20,14 @@ val jimCompiler = JIMCompiler.newCompiler()
 val result = jimCompiler.compile(List((simpleClassName, simpleClassSource)))
 val clazz = result.classLoader.loadClass(simpleClassName)
 ```
+## Install
+1. clone repository
+2. run `sbt publish-local`
+3. add `"pl.krever.jimcy" % "jimcy" % "0.1.0-SNAPSHOT"` to your dependency list
+
 ## TODO
 * Java API
+* Publish to public repository
 
 ## Thanks
 http://www.javablogging.com/dynamic-in-memory-compilation/
