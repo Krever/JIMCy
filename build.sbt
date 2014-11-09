@@ -1,7 +1,14 @@
-name := "JIMCy"
+name              := "jimcy"
 
-version := "1.0"
+version           := "0.1.0-SNAPSHOT"
 
+organization      := "pl.krever.jimcy"
+
+scalaVersion      := "2.11.1"
+
+crossPaths := false
+
+publishMavenStyle := true
 
 libraryDependencies ++= Seq(
   "org.specs2" %% "specs2" % "2.4.9" % "test"
