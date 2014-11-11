@@ -5,11 +5,16 @@ import java.net.URI
 import javax.tools.JavaFileObject.Kind
 import javax.tools._
 
+import pl.krever.jimcy.JIMCompiler.CompilationResult
+
 import scala.collection.convert.Wrappers.IterableWrapper
 
 
 object JIMCompiler {
   def newCompiler(compiler: JavaCompiler = ToolProvider.getSystemJavaCompiler) = new JIMCompiler(compiler)
+
+  case class CompilationResult[DiagnosticListenerType <: DiagnosticListener[_ >: JavaFileObject]]
+  (status: Boolean, diagnostics: DiagnosticListenerType, classLoader: InMemoryClassLoader)
 }
 
 
@@ -43,8 +48,5 @@ class JIMCompiler private(compiler: JavaCompiler) {
 
     override def getCharContent(ignoreEncodingErrors: Boolean): CharSequence = code
   }
-
-  case class CompilationResult[DiagnosticListenerType <: DiagnosticListener[_ >: JavaFileObject]]
-  (status: Boolean, diagnostics: DiagnosticListenerType, classLoader: InMemoryClassLoader)
 
 }

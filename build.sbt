@@ -11,7 +11,8 @@ crossPaths := false
 publishMavenStyle := true
 
 libraryDependencies ++= Seq(
-  "org.specs2" %% "specs2" % "2.4.9" % "test"
+  "org.specs2" %% "specs2" % "2.4.9" % "test",
+  "org.projectlombok" % "lombok" % "1.14.8"
 )
 
 scalacOptions in Test ++= Seq("-Yrangepos")

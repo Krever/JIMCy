@@ -3,7 +3,7 @@ package pl.krever.jimcy
 import java.security.SecureClassLoader
 
 
-protected[jimcy] class InMemoryClassLoader(private val classes :scala.collection.Map[String, InMemoryJavaClassObject])
+class InMemoryClassLoader(private val classes :scala.collection.Map[String, InMemoryJavaClassObject])
   extends SecureClassLoader() {
 
   protected override def findClass(name: String): Class[_] = {
@@ -15,7 +15,6 @@ protected[jimcy] class InMemoryClassLoader(private val classes :scala.collection
     }
   }
 
-  def allClasses = classes.toMap
-
+  def allClasses :Map[String, Class[_]] = classes.map( entry => entry._1 -> loadClass(entry._1)).toMap
 
 }
