@@ -109,4 +109,11 @@ class JavaApiTest extends Specification with Mockito {
 
   }
 
+  "JIMCompilerFactory" should {
+    "return JIMCompilerImpl" in {
+      val jimCompiler = JIMCompilerFactory.newCompiler()
+
+      jimCompiler should beAnInstanceOf[JIMCompilerImpl]
+    }
+  }
 }

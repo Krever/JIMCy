@@ -2,7 +2,7 @@ package pl.krever.jimcy.j_api
 
 import javax.tools.JavaCompiler
 
-class JIMCompilerFactory {
+object JIMCompilerFactory {
 
    def newCompiler(javaCompiler :JavaCompiler) :JIMCompiler = new JIMCompilerImpl(javaCompiler)
 

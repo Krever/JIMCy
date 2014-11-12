@@ -12,7 +12,7 @@ protected[j_api] class JIMCompilerImpl(private val javaCompiler: JavaCompiler ) 
 
   def this() { this(ToolProvider.getSystemJavaCompiler) }
 
-  override def compilation(compilationUnits: util.List[CompilationUnit]): CompilationTask[_] = {
+  override def compilation(compilationUnits: util.List[CompilationUnit]): CompilationTask[DiagnosticCollector[JavaFileObject]] = {
     CompilationTaskImpl(compilationUnits)
   }
 

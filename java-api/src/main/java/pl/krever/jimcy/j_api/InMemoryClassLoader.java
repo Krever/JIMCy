@@ -10,7 +10,7 @@ import java.util.Enumeration;
 import java.util.Map;
 
 
-//TODO change to @Delegate from lombok
+
 public class InMemoryClassLoader extends ClassLoader {
 
     private final pl.krever.jimcy.InMemoryClassLoader classLoader;
