@@ -4,11 +4,9 @@ import java.io.Writer
 import java.{lang, util}
 import javax.tools._
 
-import pl.krever.jimcy.j_api.JIMCompiler.{CompilationResult, CompilationTask, CompilationUnit}
-
 import scala.collection.JavaConversions._
 
-class JIMCompilerImpl(private val javaCompiler: JavaCompiler ) extends JIMCompiler {
+protected[j_api] class JIMCompilerImpl(private val javaCompiler: JavaCompiler ) extends JIMCompiler {
 
   protected val scalaJIMCompiler = pl.krever.jimcy.JIMCompiler.newCompiler(javaCompiler)
 
@@ -33,7 +31,7 @@ class JIMCompilerImpl(private val javaCompiler: JavaCompiler ) extends JIMCompil
     override def run(): CompilationResult[DiagnosticListenerType] = {
       //(scalaJIMCompiler.compile _).tupled(CompilationTaskImpl.unapply(this).get)
       val scalaResult = scalaJIMCompiler.compile(
-      compilationEntries = compilationUnits.toList.map( u => (u.className, u.sourceCode)),
+      compilationEntries = compilationUnits.toList.map( u => (u.getClassName, u.getSourceCode)),
       outputWriter = outputWriter,
       fileManager = fileManager,
       diagnosticListener = diagnosticListener,

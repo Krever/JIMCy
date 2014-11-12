@@ -1,19 +1,15 @@
-name              := "jimcy"
+name                       := "jimcy"
 
-version           := "0.1.0-SNAPSHOT"
+version in ThisBuild       := "0.1.0-SNAPSHOT"
 
-organization      := "pl.krever.jimcy"
+organization in ThisBuild  := "pl.krever.jimcy"
 
-scalaVersion      := "2.11.1"
+scalaVersion in ThisBuild  := "2.11.1"
 
-crossPaths := false
+crossPaths in ThisBuild    := false
 
-publishMavenStyle := true
+publishMavenStyle in ThisBuild := true
 
-libraryDependencies ++= Seq(
-  "org.specs2" %% "specs2" % "2.4.9" % "test",
-  "org.projectlombok" % "lombok" % "1.14.8"
-)
 
 scalacOptions in Test ++= Seq("-Yrangepos")
 

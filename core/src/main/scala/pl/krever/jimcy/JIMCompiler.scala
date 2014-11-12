@@ -18,7 +18,7 @@ object JIMCompiler {
 }
 
 
-class JIMCompiler private(compiler: JavaCompiler) {
+class JIMCompiler private(val javaCompiler: JavaCompiler) {
 
   private implicit def toJavaIterable[T](sIterable: Iterable[T]): java.lang.Iterable[T] =
     if (sIterable == null) null else IterableWrapper(sIterable)
@@ -27,7 +27,7 @@ class JIMCompiler private(compiler: JavaCompiler) {
   def compile[DiagnosticListenerType <: DiagnosticListener[_ >: JavaFileObject]]
   (compilationEntries: List[(String, String)],
    outputWriter: Writer = null,
-   fileManager: JavaFileManager = compiler.getStandardFileManager(null, null, null),
+   fileManager: JavaFileManager = javaCompiler.getStandardFileManager(null, null, null),
    diagnosticListener: DiagnosticListenerType = new DiagnosticCollector[JavaFileObject](),
    options: Iterable[String] = null,
    annotationProcessedClasses: Iterable[String] = null): CompilationResult[DiagnosticListenerType] = {
@@ -35,7 +35,7 @@ class JIMCompiler private(compiler: JavaCompiler) {
     val compilationUnits = compilationEntries.map(JavaSourceFromString.tupled)
     val inMemoryFileManager = new InMemoryFileManager(fileManager)
 
-    val compilationTask = compiler.getTask(outputWriter, inMemoryFileManager, diagnosticListener,
+    val compilationTask = javaCompiler.getTask(outputWriter, inMemoryFileManager, diagnosticListener,
       options, annotationProcessedClasses, compilationUnits)
 
     val success = compilationTask.call()

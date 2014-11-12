@@ -2,13 +2,12 @@ package pl.krever.jimcy.j_api
 
 import java.io.Writer
 import java.util
-import javax.tools.{DiagnosticCollector, DiagnosticListener, JavaFileObject, JavaFileManager}
+import javax.tools.{DiagnosticCollector, DiagnosticListener, JavaFileManager, JavaFileObject}
 
 import org.mockito.Matchers
 import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
 import pl.krever.jimcy
-import pl.krever.jimcy.j_api.JIMCompiler.CompilationUnit
 
 import scala.collection.JavaConversions
 
