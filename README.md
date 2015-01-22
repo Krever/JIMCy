@@ -2,7 +2,6 @@
 ## Info
 JIMCy(Java In Memory Compiler) is a lightweight library wrapped around javax.tools.JavaCompiler.
 It allows you to compile String-based sources without use of filesystem.
-Currently only Scala api is availible.
 
 ## Example
 Following example are minimal. API tries to be as customizable as the javax.tools.JavaCompiler.
