@@ -10,6 +10,11 @@ crossPaths in ThisBuild    := false
 
 publishMavenStyle in ThisBuild := true
 
+libraryDependencies in ThisBuild ++= Seq(
+  "org.specs2" %% "specs2-core" % "2.4.15" % "test",
+  "org.specs2" %% "specs2-mock" % "2.4.15" % "test"
+)
+
 
 scalacOptions in Test ++= Seq("-Yrangepos")
 
