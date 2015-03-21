@@ -35,9 +35,7 @@ CompilationResult<DiagnosticCollector<JavaFileObject>> compilationResult = compi
 
 ```
 ## Install
-1. clone repository
-2. run `sbt publish-local`
-3. add `"pl.krever.jimcy" % "jimcy" % "0.1.0-SNAPSHOT"` to your dependency list
+add `dependsOn(RootProject(uri("https://github.com/Krever/JIMCy.git")))`
 
 
 ## Thanks
