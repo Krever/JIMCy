@@ -11,7 +11,6 @@ Following example are minimal. API tries to be as customizable as the javax.tool
 ```scala
 import pl.krever.jimcy.JIMCompiler
 
-val simpleClassName = "HelloWorld"
 val simpleClassSource = """
                         |public class HelloWorld {
                         |  public static void main(String args[]) {
@@ -22,7 +21,7 @@ val simpleClassSource = """
 
 val jimCompiler = JIMCompiler.newCompiler()
 
-val result = jimCompiler.compile(List((simpleClassName, simpleClassSource)))
+val result = jimCompiler.compile(List(simpleClassSource))
 val clazz = result.classLoader.loadClass(simpleClassName)
 ```
 ### Java
@@ -30,7 +29,7 @@ val clazz = result.classLoader.loadClass(simpleClassName)
 import pl.krever.jimcy.j_api.JIMCompiler
 
 JIMCompiler compiler = JIMCompilerFactory.newCompiler();
-CompilationTask<DiagnosticCollector<JavaFileObject>> compilationTask = compiler.compilation(Arrays.asList(new CompilationUnit("className", "sourceCode")));
+CompilationTask<DiagnosticCollector<JavaFileObject>> compilationTask = compiler.compilation(Arrays.asList("sourceCode")));
 CompilationResult<DiagnosticCollector<JavaFileObject>> compilationResult = compilationTask.run();
 
 ```

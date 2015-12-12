@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface JIMCompiler {
 
-    public abstract CompilationTask<DiagnosticCollector<JavaFileObject>> compilation(List<CompilationUnit> compilationUnits);
+    CompilationTask<DiagnosticCollector<JavaFileObject>> compilation(List<String> sources);
 
 }

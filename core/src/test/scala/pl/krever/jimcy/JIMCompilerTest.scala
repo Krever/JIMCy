@@ -9,8 +9,9 @@ import org.specs2.mutable.Specification
 class JIMCompilerTest extends Specification with Mockito {
 
   val simpleClassName = "HelloWorld"
-  val simpleClassSource = """
-                            |public class HelloWorld {
+  val simpleClassSource =
+    s"""
+       |public class $simpleClassName {
                             |  public static void main(String args[]) {
                             |    System.out.println("This is in another java file");
                             |  }
@@ -18,8 +19,9 @@ class JIMCompilerTest extends Specification with Mockito {
                           """.stripMargin
 
   val emptyClassName = "Empty"
-  val emptyClassSource = """
-                            |public class Empty {
+  val emptyClassSource =
+    s"""
+       |public class $emptyClassName {
                             |
                             |}
                           """.stripMargin
@@ -31,7 +33,7 @@ class JIMCompilerTest extends Specification with Mockito {
 
       val jimCompiler = JIMCompiler.newCompiler()
 
-      val result = jimCompiler.compile(List((simpleClassName, simpleClassSource)))
+      val result = jimCompiler.compile(List(simpleClassSource))
 
       result.status must beTrue
       result.classLoader.loadClass(simpleClassName) must not beNull
@@ -40,7 +42,7 @@ class JIMCompilerTest extends Specification with Mockito {
     "compile and load multiple classes" in {
       val jimCompiler = JIMCompiler.newCompiler()
 
-      val result = jimCompiler.compile(List((simpleClassName, simpleClassSource), (emptyClassName, emptyClassSource)))
+      val result = jimCompiler.compile(List(simpleClassSource, emptyClassSource))
 
       result.status must beTrue
       result.classLoader.loadClass(simpleClassName) must not beNull;

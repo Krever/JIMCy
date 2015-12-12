@@ -1,7 +1,7 @@
 package pl.krever.jimcy.j_api
 
 import java.io.Writer
-import java.util
+import java.{lang, util}
 import javax.tools.{DiagnosticCollector, DiagnosticListener, JavaFileManager, JavaFileObject}
 
 import org.mockito.Matchers
@@ -9,8 +9,7 @@ import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
 import pl.krever.jimcy
 
-import scala.collection.JavaConversions
-
+import scala.collection.JavaConverters._
 
 class JavaApiTest extends Specification with Mockito {
 
@@ -18,20 +17,20 @@ class JavaApiTest extends Specification with Mockito {
     "forward parameters to JIMCompiler" in {
 
       val scalaCompilerMock = smartMock[pl.krever.jimcy.JIMCompiler]
-      scalaCompilerMock.compile[DiagnosticCollector[JavaFileObject]](any, any, any, any, any, any) returns pl.krever.jimcy.JIMCompiler.CompilationResult(true, new DiagnosticCollector[JavaFileObject], null)
+      scalaCompilerMock.compile[DiagnosticCollector[JavaFileObject]](any, any, any, any, any, any) returns pl.krever.jimcy.JIMCompiler.CompilationResult(status = true, new DiagnosticCollector[JavaFileObject], null)
 
       val jimCompiler = new JIMCompilerImpl() {
         override val scalaJIMCompiler = scalaCompilerMock
       }
 
-      val compilationUnits = List(("test1", "test1source"))
-      val compilationTask = jimCompiler.compilation(JavaConversions.seqAsJavaList(compilationUnits.map{ case (k,v) => new CompilationUnit(k,v) }) )
+      val compilationUnits = List("test1source")
+      val compilationTask = jimCompiler.compilation(compilationUnits.asJava)
 
       val writer = smartMock[Writer]
       val fileManager = smartMock[JavaFileManager]
       val diagnosticListener :DiagnosticListener[JavaFileObject] = smartMock[DiagnosticListener[JavaFileObject]]
-      val options = new util.ArrayList[String]()
-      val classes = new util.ArrayList[String]()
+      val options: lang.Iterable[String] = new util.ArrayList[String]()
+      val classes: lang.Iterable[String] = new util.ArrayList[String]()
 
       val filledCompilationTask = compilationTask
         .withOutputWriter(writer)
@@ -43,8 +42,7 @@ class JavaApiTest extends Specification with Mockito {
       filledCompilationTask.run()
       there was one(scalaCompilerMock).compile(
         Matchers.eq(compilationUnits), Matchers.eq(writer), Matchers.eq(fileManager),
-        Matchers.eq(diagnosticListener), Matchers.eq(JavaConversions.iterableAsScalaIterable(options)),
-        Matchers.eq(JavaConversions.iterableAsScalaIterable(classes)))
+        Matchers.eq(diagnosticListener), Matchers.eq(options.asScala), Matchers.eq(classes.asScala))
 
     }
 
@@ -61,8 +59,8 @@ class JavaApiTest extends Specification with Mockito {
         override val scalaJIMCompiler = scalaCompilerMock
       }
 
-      val compilationUnits = List(("test1", "test1source"))
-      val compilationTask = jimCompiler.compilation(JavaConversions.seqAsJavaList(compilationUnits.map{ case (k,v) => new CompilationUnit(k,v) }) )
+      val compilationUnits = List("test1source")
+      val compilationTask = jimCompiler.compilation(compilationUnits.asJava)
       val result = compilationTask.run
 
       result.getStatus must beEqualTo(resultStatus)

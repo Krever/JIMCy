@@ -7,11 +7,17 @@ import javax.tools._
 
 import pl.krever.jimcy.JIMCompiler.CompilationResult
 
-import scala.collection.convert.Wrappers.IterableWrapper
-
+import scala.collection.JavaConverters._
 
 object JIMCompiler {
-  def newCompiler(compiler: JavaCompiler = ToolProvider.getSystemJavaCompiler) = new JIMCompiler(compiler)
+
+  def newCompiler(compiler: JavaCompiler) = new JIMCompiler(compiler)
+
+  def newCompiler() = {
+    val compiler = ToolProvider.getSystemJavaCompiler
+    if (compiler == null) throw new RuntimeException("Java Compiler could not be found. Please use JDK instead of JRE.")
+    new JIMCompiler(compiler)
+  }
 
   case class CompilationResult[DiagnosticListenerType <: DiagnosticListener[_ >: JavaFileObject]]
   (status: Boolean, diagnostics: DiagnosticListenerType, classLoader: InMemoryClassLoader)
@@ -20,30 +26,26 @@ object JIMCompiler {
 
 class JIMCompiler private(val javaCompiler: JavaCompiler) {
 
-  private implicit def toJavaIterable[T](sIterable: Iterable[T]): java.lang.Iterable[T] =
-    if (sIterable == null) null else IterableWrapper(sIterable)
-
-
   def compile[DiagnosticListenerType <: DiagnosticListener[_ >: JavaFileObject]]
-  (compilationEntries: List[(String, String)],
+  (sources: List[String],
    outputWriter: Writer = null,
    fileManager: JavaFileManager = javaCompiler.getStandardFileManager(null, null, null),
    diagnosticListener: DiagnosticListenerType = new DiagnosticCollector[JavaFileObject](),
-   options: Iterable[String] = null,
-   annotationProcessedClasses: Iterable[String] = null): CompilationResult[DiagnosticListenerType] = {
+   options: Iterable[String] = Iterable(),
+   annotationProcessedClasses: Iterable[String] = Iterable()): CompilationResult[DiagnosticListenerType] = {
 
-    val compilationUnits = compilationEntries.map(JavaSourceFromString.tupled)
+    val compilationUnits = sources.map(s => JavaStringSource(JavaClassNameFinder.findName(s), s))
     val inMemoryFileManager = new InMemoryFileManager(fileManager)
 
     val compilationTask = javaCompiler.getTask(outputWriter, inMemoryFileManager, diagnosticListener,
-      options, annotationProcessedClasses, compilationUnits)
+      options.asJava, annotationProcessedClasses.asJava, compilationUnits.asJava)
 
     val success = compilationTask.call()
 
     CompilationResult[DiagnosticListenerType](success, diagnosticListener, inMemoryFileManager.classLoader)
   }
 
-  case class JavaSourceFromString(name: String, code: String)
+  private case class JavaStringSource(name: String, code: String)
     extends SimpleJavaFileObject(URI.create("string:///" + name.replace('.', '/') + Kind.SOURCE.extension), Kind.SOURCE) {
 
     override def getCharContent(ignoreEncodingErrors: Boolean): CharSequence = code

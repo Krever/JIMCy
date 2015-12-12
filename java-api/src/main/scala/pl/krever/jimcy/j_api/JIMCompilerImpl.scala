@@ -4,7 +4,7 @@ import java.io.Writer
 import java.{lang, util}
 import javax.tools._
 
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 protected[j_api] class JIMCompilerImpl(private val javaCompiler: JavaCompiler ) extends JIMCompiler {
 
@@ -12,14 +12,14 @@ protected[j_api] class JIMCompilerImpl(private val javaCompiler: JavaCompiler ) 
 
   def this() { this(ToolProvider.getSystemJavaCompiler) }
 
-  override def compilation(compilationUnits: util.List[CompilationUnit]): CompilationTask[DiagnosticCollector[JavaFileObject]] = {
+  override def compilation(compilationUnits: util.List[String]): CompilationTask[DiagnosticCollector[JavaFileObject]] = {
     CompilationTaskImpl(compilationUnits)
   }
 
 
   case class CompilationTaskImpl[DiagnosticListenerType <: DiagnosticListener[_ >: JavaFileObject]]
   (
-    private val compilationUnits: util.List[CompilationUnit],
+    private val compilationUnits: util.List[String],
     private val outputWriter: Writer = null,
     private val fileManager: JavaFileManager = javaCompiler.getStandardFileManager(null, null, null),
     private val diagnosticListener: DiagnosticListenerType = new DiagnosticCollector[JavaFileObject](),
@@ -31,12 +31,12 @@ protected[j_api] class JIMCompilerImpl(private val javaCompiler: JavaCompiler ) 
     override def run(): CompilationResult[DiagnosticListenerType] = {
       //(scalaJIMCompiler.compile _).tupled(CompilationTaskImpl.unapply(this).get)
       val scalaResult = scalaJIMCompiler.compile(
-      compilationEntries = compilationUnits.toList.map( u => (u.getClassName, u.getSourceCode)),
+        sources = compilationUnits.asScala.toList,
       outputWriter = outputWriter,
       fileManager = fileManager,
       diagnosticListener = diagnosticListener,
-      options = options.toIterable,
-      annotationProcessedClasses = annotationProcessedClasses.toIterable
+        options = options.asScala,
+        annotationProcessedClasses = annotationProcessedClasses.asScala
       )
       val javaInMemoryClassLoader = new InMemoryClassLoader(scalaResult.classLoader)
 
