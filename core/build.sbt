@@ -1,1 +1,0 @@
-name              := "jimcy-java-api"

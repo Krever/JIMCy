@@ -1,10 +1,10 @@
 name                       := "jimcy"
 
-version in ThisBuild       := "0.1.0-SNAPSHOT"
+version in ThisBuild       := "0.2.0-SNAPSHOT"
 
-organization in ThisBuild  := "pl.krever.jimcy"
+organization in ThisBuild  := "pl.krever"
 
-scalaVersion in ThisBuild  := "2.11.1"
+scalaVersion in ThisBuild  := "2.11.7"
 
 crossPaths in ThisBuild    := false
 
@@ -15,9 +15,11 @@ libraryDependencies in ThisBuild ++= Seq(
   "org.specs2" %% "specs2-mock" % "2.4.15" % "test"
 )
 
+lazy val root = Project(id = "jimcy",
+  base = file(".")) aggregate(core, java_api)
 
-scalacOptions in Test ++= Seq("-Yrangepos")
+lazy val core = Project(id = "jimcy-core",
+  base = file("core"))
 
-resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)
-
-resolvers += "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"
+lazy val java_api = Project(id = "jimcy-java-api",
+  base = file("java-api")) dependsOn core

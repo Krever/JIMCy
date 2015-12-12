@@ -1,5 +1,3 @@
-name              := "jimcy-core"
-
 compileOrder := CompileOrder.JavaThenScala
 
 libraryDependencies ++= Seq(
