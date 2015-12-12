@@ -6,8 +6,6 @@ organization in ThisBuild  := "pl.krever"
 
 scalaVersion in ThisBuild  := "2.11.7"
 
-crossPaths in ThisBuild    := false
-
 publishMavenStyle in ThisBuild := true
 
 libraryDependencies in ThisBuild ++= Seq(
