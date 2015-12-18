@@ -5,11 +5,11 @@ It allows you to compile String-based sources without use of filesystem.
 
 [![Build Status](https://travis-ci.org/Krever/JIMCy.svg?branch=master)](https://travis-ci.org/Krever/JIMCy)
 ## Example
-Following example are minimal. API tries to be as customizable as the javax.tools.JavaCompiler.
+Following examples are minimal. API tries to be as customizable as the javax.tools.JavaCompiler.
 
 ### Scala
 ```scala
-import pl.krever.jimcy.JIMCompiler
+import com.github.krever.jimcy.JIMCompiler
 
 val simpleClassSource = """
                         |public class HelloWorld {
@@ -26,7 +26,7 @@ val clazz = result.classLoader.loadClass(simpleClassName)
 ```
 ### Java
 ```java
-import pl.krever.jimcy.j_api.JIMCompiler
+import com.github.krever.jimcy.j_api.JIMCompiler
 
 JIMCompiler compiler = JIMCompilerFactory.newCompiler();
 CompilationTask<DiagnosticCollector<JavaFileObject>> compilationTask = compiler.compilation(Arrays.asList("sourceCode")));
@@ -34,7 +34,10 @@ CompilationResult<DiagnosticCollector<JavaFileObject>> compilationResult = compi
 
 ```
 ## Install
-add `dependsOn(RootProject(uri("https://github.com/Krever/JIMCy.git")))`
+```
+libraryDependencies += "com.github.krever" %% "jimcy-core" % "0.2.0"
+libraryDependencies += "com.github.krever" %% "jimcy-java-api" % "0.2.0"
+```
 
 
 ## Thanks
